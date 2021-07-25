@@ -46,4 +46,5 @@ typedef struct {
 } ListenSocket;
 
 ListenSocket* ListenSocket_new(char *node, char *service);
-void ListenSocket_free(ListenSocket* socket);
+void ListenSocket_free(ListenSocket* sock);
+int ListenSocket_process(ListenSocket* sock);

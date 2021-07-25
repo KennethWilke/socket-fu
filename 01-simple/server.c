@@ -16,9 +16,11 @@ int main(int argc, char *argv[]) {
         fprintf(stderr, "Failed to create listening socket, closing...\n");
         return 1;
     }
-    printf("Socket is now listening for connections\n");
-    printf("Waiting for 10 seconds...\n");
-    sleep(10);
+
+    int running = 1;
+    while (running) {
+        running = ListenSocket_process(listen);
+    }
 
     ListenSocket_free(listen);
 }
@@ -75,4 +77,23 @@ void ListenSocket_free(ListenSocket* sock) {
         }
         free(sock);
     }
+}
+
+int ListenSocket_process(ListenSocket* sock) {
+    struct sockaddr client_address;
+    socklen_t addrlen = sizeof(client_address);
+    int client = accept(sock->socket, &client_address, &addrlen);
+    if (client == -1) {
+        fprintf(stderr, "Error accepting client connection: %s\n",
+                strerror(errno));
+        return 0;
+    }
+    printf("Client connected>\n");
+
+    char buffer[1024];
+    ssize_t recvlen = recv(client, buffer, 1024, 0);
+    printf("Received %ld bytes\n", recvlen); 
+    send(client, buffer, recvlen, 0);
+    close(client);
+    return 0;
 }

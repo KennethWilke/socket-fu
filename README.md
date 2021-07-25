@@ -8,6 +8,7 @@ These examples will be geared towards usage on Linux. The simpler examples shoul
 
 These are the types of examples I'm intending to make, though nothing exists quite yet!
 
-- [ ] A simple IPv4 TCP Server (single threaded, blocking sockets, terrible overall)
-- [ ] A better server
-- [ ] An actually nice starting place server
+- [x] [A simple TCP Server base](01-simple)
+- [ ] A TCP server that forks processes for each connection
+- [ ] A single-threaded, asynchronous TCP server that uses `select`
+- [ ] A single-threaded, asynchronous TCP server that uses `epoll`
