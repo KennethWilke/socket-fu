@@ -60,3 +60,4 @@ void ListenSocket_process(ListenSocket* sock);
 
 
 int running;
+struct sigaction new_action, old_action;

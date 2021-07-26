@@ -29,12 +29,19 @@ int main(int argc, char *argv[]) {
 
 
 void setup_signal_handling(void) {
+    memset (&new_action, '\0', sizeof(new_action));
+    new_action.sa_handler = handle_sigint;
 
+    if (sigaction(SIGINT, &new_action, &old_action)) {
+        fprintf(stderr, "Error registering SIGINT handler: %s\n",
+                strerror(errno));
+    }
 }
 
 
 void handle_sigint(int signum) {
-
+    printf("Interrupt received, stopping server...\n");
+    running = 0;
 }
 
 
@@ -101,12 +108,11 @@ void ListenSocket_process(ListenSocket* sock) {
                 strerror(errno));
         return;
     }
-    printf("Client connected>\n");
+    printf("Client connected\n");
 
     char buffer[1024];
     ssize_t recvlen = recv(client, buffer, 1024, 0);
     printf("Received %ld bytes\n", recvlen); 
     send(client, buffer, recvlen, 0);
     close(client);
-    running = 0;
 }
