@@ -17,12 +17,24 @@ int main(int argc, char *argv[]) {
         return 1;
     }
 
-    int running = 1;
+    setup_signal_handling();
+
+    running = 1;
     while (running) {
-        running = ListenSocket_process(listen);
+        ListenSocket_process(listen);
     }
 
     ListenSocket_free(listen);
+}
+
+
+void setup_signal_handling(void) {
+
+}
+
+
+void handle_sigint(int signum) {
+
 }
 
 
@@ -79,14 +91,15 @@ void ListenSocket_free(ListenSocket* sock) {
     }
 }
 
-int ListenSocket_process(ListenSocket* sock) {
+
+void ListenSocket_process(ListenSocket* sock) {
     struct sockaddr client_address;
     socklen_t addrlen = sizeof(client_address);
     int client = accept(sock->socket, &client_address, &addrlen);
     if (client == -1) {
         fprintf(stderr, "Error accepting client connection: %s\n",
                 strerror(errno));
-        return 0;
+        return;
     }
     printf("Client connected>\n");
 
@@ -95,5 +108,5 @@ int ListenSocket_process(ListenSocket* sock) {
     printf("Received %ld bytes\n", recvlen); 
     send(client, buffer, recvlen, 0);
     close(client);
-    return 0;
+    running = 0;
 }

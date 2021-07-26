@@ -1,5 +1,5 @@
 # Socket server 1
 
-A useless shell of a server!
+A nearly useless shell of a server!
 
-This program is designed to be a very simple baseline to start building a server around. It doesn't actually accept connections, but serves as a base before splitting off into a synchronous multitreaded server and an asynchronous single threaded server.
+This program is designed to be a very simple baseline to start building a server around. It operates like a simple echo server, sending back whatever data it receives. It will perform `accept()`/`recv()`/`send()` for the first incoming connection, then closes all resources gracefully.

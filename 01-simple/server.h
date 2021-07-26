@@ -33,6 +33,12 @@
 */
 #include <unistd.h>
 
+/* signal for:
+    sigaction
+*/
+#include <signal.h>
+
+
 typedef enum {
     ERROR,
     LISTENING
@@ -45,6 +51,12 @@ typedef struct {
     struct addrinfo *address;
 } ListenSocket;
 
+
+void setup_signal_handling(void);
+void handle_sigint(int signum);
 ListenSocket* ListenSocket_new(char *node, char *service);
 void ListenSocket_free(ListenSocket* sock);
-int ListenSocket_process(ListenSocket* sock);
+void ListenSocket_process(ListenSocket* sock);
+
+
+int running;
